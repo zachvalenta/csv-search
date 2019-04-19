@@ -1,7 +1,5 @@
-import csv
-
-from src.app import read_csv
+from src.app import create_query_container
 
 
-def test_my_function():
-    assert isinstance(read_csv(), csv.DictReader)
+def test_create_containers():
+    assert isinstance(create_query_container(), list)
