@@ -1,27 +1,37 @@
 import csv
+import re
 
 from loguru import logger
 
 
-def get_queries():
+def get_tokens():
     with open('queries.txt', mode='r') as f:
-        return f.read().splitlines()
+        tokens = list()
+        queries = f.read().splitlines()
+        for x in queries:
+            tokens.append(x.split())
+        return tokens
 
 
 def create_query_container():
-    queries = get_queries()
+    tokens = get_tokens()
     containers = list()
-    for q in queries:
+    for token in tokens:
         containers.append(dict(
-            query=q,
             count=0,
-            results=list()
+            tokens=token,
         ))
     return containers
 
 
 def read_products():
+    queries = create_query_container()
     with open('search_dataset.csv', mode='r') as f:
         reader = csv.DictReader(f, fieldnames=('id', 'name', 'brand'))
         for row in reader:
-            logger.debug('id {} name {} brand {}'.format(row['id'], row['name'], row['brand']))
+            for query in queries:
+                for token in query['tokens']:
+                    regex = re.compile(r'^{}'.format(token), re.IGNORECASE)
+                    if re.search(regex, row['name']):
+                        query['count'] += 1
+    logger.debug(queries)
