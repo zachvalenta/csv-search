@@ -15,7 +15,7 @@ coverage==4.5.2
 curtsies==0.3.0
 flake8==3.6.0
 gitdb2==2.0.5
-GitPython==3.1.58
+GitPython==3.1.59
 greenlet==0.4.15
 idna==3.15
 loguru==0.5.3
